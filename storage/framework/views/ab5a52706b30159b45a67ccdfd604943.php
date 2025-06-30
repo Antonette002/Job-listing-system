@@ -77,7 +77,7 @@ unset($__errorArgs, $__bag); ?>
                 <select name="employment_type" id="employment_type" required
                     class="mt-1 block w-full px-4 py-2 border border-blue-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
                     <option value="">-- Select --</option>
-                    <?php $__currentLoopData = ['Full-time', 'Part-time', 'Internship', 'Contract', 'Temporary', 'Volunteer', 'Remote']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = ['Full-time', 'Part-time', 'Internship', 'Remote']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option value="<?php echo e($type); ?>" <?php echo e(old('employment_type') == $type ? 'selected' : ''); ?>><?php echo e($type); ?></option>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>

@@ -6,9 +6,16 @@
     <title>@yield('title', 'Company Dashboard')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
-        function toggleDropdown() {
-            const dropdown = document.getElementById('job-dropdown');
-            dropdown.classList.toggle('hidden');
+        // Updated toggleDropdown function to accept ID and toggle correct menu
+        function toggleDropdown(id) {
+            // Hide all dropdowns first (optional, but nice UX)
+            document.querySelectorAll('ul[id$="-dropdown"]').forEach(el => el.classList.add('hidden'));
+
+            // Toggle the selected dropdown
+            const dropdown = document.getElementById(id);
+            if (dropdown) {
+                dropdown.classList.toggle('hidden');
+            }
         }
     </script>
 </head>
@@ -28,7 +35,7 @@
             <div>
                 <ul>
                     <li class="mb-2">
-                        <button onclick="toggleDropdown()" class="w-full text-left p-2 hover:bg-blue-800 rounded">
+                        <button onclick="toggleDropdown('job-dropdown')" class="w-full text-left p-2 hover:bg-blue-800 rounded">
                             🧾 Jobs
                         </button>
                         <ul id="job-dropdown" class="hidden ml-4 mt-1 space-y-1">
@@ -36,9 +43,20 @@
                             <li><a href="{{ route('jobs.index') }}" class="block p-1 hover:bg-blue-800 rounded">View Jobs</a></li>
                         </ul>
                     </li>
+
                     <li class="mb-2">
-                        <a href="{{ route('applications.index') }}" class="block p-2 hover:bg-blue-800 rounded">📄 Applications</a>
+                        <button onclick="toggleDropdown('application-dropdown')" class="w-full text-left p-2 hover:bg-blue-800 rounded">
+                            📄 Applications
+                        </button>
+                        <ul id="application-dropdown" class="hidden ml-4 mt-1 space-y-1">
+                            <li>
+                                <a href="{{ route('applications.index') }}" class="block p-1 hover:bg-blue-800 rounded">
+                                    Review Latest Applications
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+
                     <li class="mb-2">
                         <a href="{{ route('messages.index') }}" class="block p-2 hover:bg-blue-800 rounded">💬 Messages</a>
                     </li>
@@ -55,7 +73,7 @@
 
         <!-- Main -->
         <main class="flex-1 p-6 overflow-auto bg-white">
-            @yield('content')
+           
         </main>
 
         <!-- Aside -->

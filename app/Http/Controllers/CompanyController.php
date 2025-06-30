@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\Application;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,6 +58,13 @@ class CompanyController extends Controller
     //dashboard
     public function dashboard()
     {
+         $applications=Application::latest()->get();
+        return 
+        view('companies.dashboard',compact('applications'),
+        [
+            'totalApplications'=> Application::count(),
+         
+        ]) ;
         return 
         view('companies.dashboard') ;
     }
