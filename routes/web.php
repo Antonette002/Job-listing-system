@@ -52,6 +52,7 @@ Route::resource('applications', ApplicationController::class);
 
 
 
+
 Route::resource('feedbacks', FeedbackController::class);
 Route::resource('messages', MessageController::class);
 Route::resource('users', UserController::class);

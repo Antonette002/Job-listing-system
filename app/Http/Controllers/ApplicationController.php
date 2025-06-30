@@ -22,32 +22,39 @@ class ApplicationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+public function create(Request $request)
 {
+    $jobId = $request->query('job_id');
 
-    return view('applications.create');
+    if (!$jobId || !($job = \App\Models\Job::find($jobId))) {
+        return redirect('/')->with('error', 'Invalid job selected.');
+    }
+
+    return view('applications.create', compact('job'));
 }
 
 
     /**
      * Store a newly created resource in storage.
      */
-   public function store(Request $request)
+ public function store(Request $request)
 {
-    $jobId = session('job_id');
-    $applicantId = auth()->user()->applicant->id;
+    $user = auth()->user();
 
-    $request->merge([
-        'job_id' => $jobId,
-        'applicant_id' => $applicantId,
-    ]);
+    if (!$user) {
+        return redirect()->route('applicant.login')->with('error', 'You must be logged in to apply.');
+    }
+
+    if (!$user->applicant) {
+        return redirect()->route('applicant.create')
+                         ->with('error', 'Please complete your applicant profile before applying.');
+    }
 
     $request->validate([
         'cover_letter' => 'required|file|mimes:pdf,doc,docx|max:2048',
         'cv_path' => 'required|file|mimes:pdf,doc,docx|max:2048',
         'portfolio_path' => 'nullable|file|mimes:pdf,doc,docx,zip,rar|max:4096',
         'job_id' => 'required|exists:jobs,id',
-        'applicant_id' => 'required|exists:applicants,id',
     ]);
 
     $coverLetterPath = $request->file('cover_letter')->store('cover_letters', 'public');
@@ -56,9 +63,9 @@ class ApplicationController extends Controller
         ? $request->file('portfolio_path')->store('portfolios', 'public')
         : null;
 
-    Application::create([
-        'job_id' => $jobId,
-        'applicant_id' => $applicantId,
+    $app = Application::create([
+        'job_id' => $request->input('job_id'),
+        'applicant_id' => $user->applicant->id,
         'cover_letter' => $coverLetterPath,
         'cv_path' => $cvPath,
         'portfolio_path' => $portfolioPath,
@@ -67,6 +74,7 @@ class ApplicationController extends Controller
 
     return redirect()->back()->with('status', 'Application submitted successfully!');
 }
+
 
 
 
