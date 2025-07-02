@@ -16,8 +16,8 @@ class ApplicationController extends Controller
     public function index()
     {
         
-        $applications = Application::all();
-        return view('applications.index', ['applications' => $applications]);
+        $applications = Application::with(['applicant','job'])->get();
+        return view('applications.index', compact('applications'));
     }
     /**
      * Show the form for creating a new resource.
@@ -46,7 +46,7 @@ public function create(Request $request)
     }
 
     if (!$user->applicant) {
-        return redirect()->route('applicant.create')
+        return redirect()->route('applicant.register')
                          ->with('error', 'Please complete your applicant profile before applying.');
     }
 

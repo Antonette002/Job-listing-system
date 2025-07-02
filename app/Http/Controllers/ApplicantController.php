@@ -30,7 +30,7 @@ class ApplicantController extends Controller
 
             Applicant::create([
                 'user_id' => $user->id,
-                'full_name' => $request->full_name,
+                'full_name' => $request->input('full_name'),
                 'location' => $request->location,
                 'phone' => $request->phone,
             ]);
