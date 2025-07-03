@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Job;
+use App\Models\Feedback;
 
 class ApplicantController extends Controller
 {
@@ -85,8 +86,8 @@ class ApplicantController extends Controller
         view('applicants.dashboard',compact('jobs'),
         [
             'totalJobs'=> Job::count(),
-         
-        ]) ;
+          ]) ;
+        
     }
 
    //index

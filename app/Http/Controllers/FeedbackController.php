@@ -11,11 +11,14 @@ class FeedbackController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $feedbacks = Feedback::all();
-        return view('feedbacks.index', ['feedbacks' => $feedbacks]);
-    }
+public function index()
+{
+    $applicant = auth()->user()->applicant;
+    $feedbacks = $applicant->feedbacks()->latest()->paginate(10);
+
+     return view('feedbacks.index', compact('feedbacks'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -75,7 +78,7 @@ class FeedbackController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {c
+    {
         $feedback = Feedback::findOrFail($id);
         $feedback->delete();
         return redirect()->route('feedbacks.index')->with('success', 'Feedback deleted');

@@ -47,6 +47,9 @@ Route::post('/applicant/logout', [ApplicantController::class, 'logout'])->name('
 Route::get('/applicant/dashboard', [ApplicantController::class, 'dashboard'])->name('applicant.dashboard');
 
 Route::resource('applications', ApplicationController::class);
+Route::patch('/applications/{application}/{status}', [ApplicationController::class, 'updateStatus'])
+    ->name('applications.updateStatus');
+
 
 
 
