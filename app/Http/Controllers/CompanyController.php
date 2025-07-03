@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Application;
+use App\Models\Message;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -56,48 +58,33 @@ class CompanyController extends Controller
     }
 
     //dashboard
-    public function dashboard()
-    {
-        //getting applications
-         $applications=Application::latest()->get();
-        return 
-        view('companies.dashboard',compact('applications'),
-        [
-            'totalApplications'=> Application::count(),
-         
-        ]) ;
+   public function dashboard()
+{
+    $user = auth()->user();
 
-        //getting jobs that belong to a specific company
-        $user = auth()->user();
-        $jobs = $user->company->jobs();
-        $totalJobs = $jobs->count();
+    // Get jobs for this company
+    $jobs = $user->company->jobs;
 
-    // Status breakdown
+    // Job stats
+    $totalJobs = $jobs->count();
     $activeJobs = $jobs->where('status', 'active')->count();
-    $pendingJobs = $jobs->where('status', 'pending')->count();
-    $rejectedJobs = $jobs->where('status', 'rejected')->count();
-    $acceptedJobs = $jobs->where('status', 'accepted')->count();
 
-    $totalApplications = \App\Models\Application::whereIn('job_id', $jobs->pluck('id'))->count();
-    $totalMessages = \App\Models\Message::where('company_id', $user->company->id)->count();
+    // Applications for these jobs
+    $applications = \App\Models\Application::whereIn('job_id', $jobs->pluck('id'))->get();
+    $totalApplications = $applications->count();
+
+    // Application stats
+    $pendingApplications = $applications->where('status', 'pending')->count();
+    $acceptedApplications = $applications->where('status', 'accepted')->count();
+    $rejectedApplications = $applications->where('status', 'rejected')->count();
+
+    // Messages for this company
+    $totalMessages = Message::where('receiver_id', $user->id)->count();
 
     return view('companies.dashboard', compact(
-        'totalJobs',
-        'activeJobs',
-        'pendingJobs',
-        'rejectedJobs',
-        'acceptedJobs',
-         ));
-        return 
-        view('companies.dashboard') ;
-    }
-
-    //settings
-    public function settings()
-{
-    return view('companies.settings'); 
+        'totalJobs','totalApplications','pendingApplications', 'acceptedApplications', 'rejectedApplications', 'totalMessages'
+    ));
 }
-
 
     // login
    public function login(Request $request)

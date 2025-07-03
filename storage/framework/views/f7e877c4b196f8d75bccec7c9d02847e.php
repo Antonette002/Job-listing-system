@@ -18,11 +18,19 @@
                         <p class="text-gray-600"><?php echo e($job->description); ?></p>
                         <p class="mt-2 text-gray-500">Company: <?php echo e($job->company->name); ?></p>
                         <a href="#" class="text-blue-500 hover:text-blue-700 mt-4 inline-block">View Details</a>
+                        
+                        <form action="<?php echo e(route('jobs.destroy', $job->id)); ?>" method="POST" onsubmit="return confirm('Delete this job?');" class="inline">
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('DELETE'); ?>
+                            <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm">
+                                Delete
+                            </button>
+                        </form>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         <?php else: ?>
-            <p class="text-center text-gray-500">No job listings available at the moment.</p>
+            <p class="text-center text-gray-500">No jobs found.</p>
         <?php endif; ?>
     </div>
 </body>

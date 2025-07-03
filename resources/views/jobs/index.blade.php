@@ -18,11 +18,19 @@
                         <p class="text-gray-600">{{ $job->description }}</p>
                         <p class="mt-2 text-gray-500">Company: {{ $job->company->name }}</p>
                         <a href="#" class="text-blue-500 hover:text-blue-700 mt-4 inline-block">View Details</a>
+                        
+                        <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" onsubmit="return confirm('Delete this job?');" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm">
+                                Delete
+                            </button>
+                        </form>
                     </div>
                 @endforeach
             </div>
         @else
-            <p class="text-center text-gray-500">No job listings available at the moment.</p>
+            <p class="text-center text-gray-500">No jobs found.</p>
         @endif
     </div>
 </body>
