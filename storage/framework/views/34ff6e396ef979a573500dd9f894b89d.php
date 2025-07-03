@@ -28,7 +28,8 @@
     </header>
 
     <!-- Main Layout -->
-    <div class="flex flex-1 max-w-[1300px] w-full mx-auto bg-gray-100">
+    <div class="flex flex-1 bg-gray-100">
+
 
         <!-- Sidebar -->
         <nav class="w-80 bg-[#1e293b] text-white p-4 flex flex-col justify-content min-h-[calc(100vh-64px)]">
@@ -73,7 +74,24 @@
 
         <!-- Main -->
         <main class="flex-1 p-6 overflow-auto bg-white">
-           
+           <main class="flex-1 p-6 overflow-auto bg-white">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Dashboard Overview</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-blue-900 text-white p-4 rounded-xl shadow">
+            <div class="text-2xl font-bold"><?php echo e($totalJobs ?? 0); ?></div>
+            <div class="text-sm mt-1">Total Jobs</div>
+        </div>
+        <div class="bg-blue-700 text-white p-4 rounded-xl shadow">
+            <div class="text-2xl font-bold"><?php echo e($totalApplications ?? 0); ?></div>
+            <div class="text-sm mt-1">Total Applications</div>
+        </div>
+        <div class="bg-orange-500 text-white p-4 rounded-xl shadow">
+            <div class="text-2xl font-bold"><?php echo e($totalMessages ?? 0); ?></div>
+            <div class="text-sm mt-1">Messages</div>
+        </div>
+    </div>
+</main>
+
         </main>
 
         <!-- Aside -->

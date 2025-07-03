@@ -58,6 +58,7 @@ class CompanyController extends Controller
     //dashboard
     public function dashboard()
     {
+        //getting applications
          $applications=Application::latest()->get();
         return 
         view('companies.dashboard',compact('applications'),
@@ -65,6 +66,28 @@ class CompanyController extends Controller
             'totalApplications'=> Application::count(),
          
         ]) ;
+
+        //getting jobs that belong to a specific company
+        $user = auth()->user();
+        $jobs = $user->company->jobs();
+        $totalJobs = $jobs->count();
+
+    // Status breakdown
+    $activeJobs = $jobs->where('status', 'active')->count();
+    $pendingJobs = $jobs->where('status', 'pending')->count();
+    $rejectedJobs = $jobs->where('status', 'rejected')->count();
+    $acceptedJobs = $jobs->where('status', 'accepted')->count();
+
+    $totalApplications = \App\Models\Application::whereIn('job_id', $jobs->pluck('id'))->count();
+    $totalMessages = \App\Models\Message::where('company_id', $user->company->id)->count();
+
+    return view('companies.dashboard', compact(
+        'totalJobs',
+        'activeJobs',
+        'pendingJobs',
+        'rejectedJobs',
+        'acceptedJobs',
+         ));
         return 
         view('companies.dashboard') ;
     }
