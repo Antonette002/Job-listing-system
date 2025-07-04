@@ -19,6 +19,14 @@ class ApplicationController extends Controller
         $applications = Application::with(['applicant','job'])->get();
         return view('applications.index', compact('applications'));
     }
+
+    public function show($id)
+{
+    $application = Application::with(['applicant','job')->get();
+
+    return view('applications.show', compact('applications'));
+}
+
     /**
      * Show the form for creating a new resource.
      */

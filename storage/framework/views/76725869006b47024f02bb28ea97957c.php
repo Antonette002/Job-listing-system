@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @stack('scripts') {{-- For optional custom scripts --}}
+    <title><?php echo $__env->yieldContent('title', 'Dashboard'); ?></title>
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+    <?php echo $__env->yieldPushContent('scripts'); ?> 
 </head>
 <body class="flex flex-col min-h-screen bg-gray-50">
 
     <!-- Header -->
     <header class="bg-gray-800 text-white p-4 shadow flex justify-between items-center">
-        <h1 class="text-xl font-bold">@yield('header-title', 'Dashboard')</h1>
+        <h1 class="text-xl font-bold"><?php echo $__env->yieldContent('header-title', 'Dashboard'); ?></h1>
    
 </form>
 
@@ -19,14 +19,14 @@
 
     <!-- Main Section: Sidebar + Main -->
     <div class="flex flex-1">
-        {{-- Optional Sidebar (only appears if defined in view) --}}
-        @hasSection('sidebar')
-            @yield('sidebar')
-        @endif
+        
+        <?php if (! empty(trim($__env->yieldContent('sidebar')))): ?>
+            <?php echo $__env->yieldContent('sidebar'); ?>
+        <?php endif; ?>
 
         <!-- Main Content Area -->
         <main class="flex-1 p-6 overflow-auto">
-            @yield('content')
+            <?php echo $__env->yieldContent('content'); ?>
         </main>
     </div>
 
@@ -38,3 +38,4 @@
 </body>
 </html>
 
+<?php /**PATH C:\xampp\htdocs\job-listing\resources\views/layouts/app.blade.php ENDPATH**/ ?>

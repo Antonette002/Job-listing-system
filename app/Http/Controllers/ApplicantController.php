@@ -87,6 +87,8 @@ class ApplicantController extends Controller
         [
             'totalJobs'=> Job::count(),
           ]) ;
+          $application = Application::where('applicant_id', auth()->id())->latest()->first();
+          return view('applicant.dashboard', compact('application'));
         
     }
 
