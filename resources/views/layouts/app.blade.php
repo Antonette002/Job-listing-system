@@ -19,27 +19,6 @@
     </form>
     </header>
 
-    <!-- Main Section: Sidebar + Main Content -->
-    <div class="flex flex-1 bg-gray-50">
-
-        <!-- Sidebar -->
-        <nav class="w-64 bg-white border-r border-gray-200 p-4">
-            <ul>
-                    <a href="{{ route('applicants.index') }}" class="block p-2 hover:bg-gray-100 rounded">👥 Applicants</a>
-                </li>
-                <li class="mb-2">
-                    <a href="{{ route('applications.index') }}" class="block p-2 hover:bg-gray-100 rounded">📄 Applications</a>
-                </li>
-                <li class="mb-2">
-                    <a href="{{ route('messages.index') }}" class="block p-2 hover:bg-gray-100 rounded">💬 Messages</a>
-                </li>
-                <li class="mb-2">
-                    <a href="{{ route('feedbacks.index') }}" class="block p-2 hover:bg-gray-100 rounded">⭐ Feedback</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Main Content -->
         <main class="flex-1 p-6 overflow-auto">
             @yield('content')  
         </main>

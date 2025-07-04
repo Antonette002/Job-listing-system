@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Feedback;
-
+use App\Models\Application;
 
 class FeedbackController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -18,9 +18,7 @@ public function index()
 
      return view('feedbacks.index', compact('feedbacks'));
 }
-
-
-    /**
+/**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -42,7 +40,6 @@ public function index()
     Feedback::create($validated);
     return redirect()->route('feedbacks.index')->with('success', 'Feedback submitted');
     }
-
     /**
      * Display the specified resource.
      */
@@ -51,16 +48,15 @@ public function index()
         $feedback = Feedback::findOrFail($id);
         return view('feedbacks.show', ['feedbacks' => $feedback]);
     }
-    /**
-     * Show the form for editing the specified resource.
+    /* *
+    * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $feedback = Feedback::findOrFail($id);
         return view('feedbacks.edit', ['feedbacks' => $feedback]);
     }
-
-    /**
+     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
@@ -72,6 +68,28 @@ public function index()
     $feedback = Feedback::findOrFail($id);
     $feedback->update($validated);
     return redirect()->route('feedbacks.index')->with('success', 'Feedback updated');
+    }
+
+
+    public function updateStatus(Application $application, $status)
+    {
+        if (!in_array($status, ['accepted', 'rejected'])) {
+            return back()->with('error', 'Invalid status.');
+        }
+
+        // Update the status
+        $application->status = $status;
+        $application->save();
+
+        // Auto-create feedback message
+        Feedback::create([
+            'applicant_id' => $application->applicant_id,
+            'job_id' => $application->job_id,
+            'message' => "Your application has been {$status}.",
+            'rating' => null, 
+        ]);
+
+        return redirect()->route('applications.index')->with('success', 'Status updated and feedback sent.');
     }
 
     /**

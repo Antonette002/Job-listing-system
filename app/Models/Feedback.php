@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
-     protected $table = 'feedbacks'; 
+    protected $table = 'feedbacks';
+
+     protected $fillable = [
+        'applicant_id',
+        'job_id',
+        'message',
+        'rating',
+ 
+    ];
     public function applicant()
 {
     return $this->belongsTo(Applicant::class);

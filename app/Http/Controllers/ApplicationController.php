@@ -75,7 +75,7 @@ public function create(Request $request)
     return redirect()->back()->with('status', 'Application submitted successfully!');
 }
 
-//application status
+//status update feedback
 public function updateStatus(Application $application, $status)
 {
     if (!in_array($status, ['accepted', 'rejected'])) {
@@ -89,14 +89,12 @@ public function updateStatus(Application $application, $status)
         'applicant_id' => $application->applicant_id,
         'job_id' => $application->job_id,
         'message' => "Your application for the job '{$application->job->title}' has been {$status}.",
-        'rating' => null, // optional, leave null here
+        'rating' => null,
     ]);
 
-    return redirect()->back()->with('success', "Application status updated to {$status}.");
+    return redirect()->back()->with('success', "Application marked as {$status}.");
 }
 
-    return redirect()->route('applications.index')->with('success', "Application marked as {$status}.");
-}
 
 
 
