@@ -13,11 +13,18 @@ class FeedbackController extends Controller
      */
 public function index()
 {
-    $applicant = auth()->user()->applicant;
+    $user = auth()->user();
+    $applicant = $user?->applicant;
+
+    if (!$applicant) {
+        return redirect()->route('dashboard')->with('error', 'Only applicants can view feedback.');
+    }
+
     $feedbacks = $applicant->feedbacks()->latest()->paginate(10);
 
-     return view('feedbacks.index', compact('feedbacks'));
+    return view('feedbacks.index', compact('feedbacks'));
 }
+
 /**
      * Show the form for creating a new resource.
      */
@@ -36,7 +43,7 @@ public function index()
         'rating' => 'nullable|integer|min:1|max:5',
     ]);
     $validated['applicant_id'] = auth()->user()->applicant->id;
-    $validated['job_id'] = $request->route('job'); // or optional hidden
+    $validated['job_id'] = $request->route('job'); 
     Feedback::create($validated);
     return redirect()->route('feedbacks.index')->with('success', 'Feedback submitted');
     }

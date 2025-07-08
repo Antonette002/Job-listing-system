@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Job;
 use App\Models\Feedback;
+use App\Models\Message;
 
 class ApplicantController extends Controller
 {
@@ -79,18 +80,27 @@ class ApplicantController extends Controller
     }
 
     //dashboard
-    public function dashboard()
-    {
-        $jobs=Job::latest()->get();
-        return 
-        view('applicants.dashboard',compact('jobs'),
-        [
-            'totalJobs'=> Job::count(),
-          ]) ;
-          $application = Application::where('applicant_id', auth()->id())->latest()->first();
-          return view('applicant.dashboard', compact('application'));
-        
-    }
+public function dashboard()
+{
+    $user = auth()->user();
+
+    // Safely get the applicant model
+    $applicant = $user?->applicant;
+
+    // Safely get the latest application for that applicant
+    $application = $applicant
+        ? $applicant->applications()->with('job')->latest()->first()
+        : null;
+
+    $jobs = Job::latest()->get();
+
+   return view('applicants.dashboard', compact('jobs', 'application'), [
+    'totalJobs' => Job::count(),
+    'totalMessages' => $applicant ? Message::where('receiver_id', auth()->id())->count() : 0,
+    'totalFeedback' => $applicant ? Feedback::where('applicant_id', $applicant->id)->count() : 0,
+]);
+
+}
 
    //index
 
