@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Applicant\SettingsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
@@ -55,13 +56,19 @@ Route::post('/applicant/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-
-    return redirect('/applicant/login');
-})->name('applicant.logout');
+    return redirect('/applicant/login');})->name('applicant.logout');
 // Register
 Route::match(['get', 'post'], '/applicant/register', [ApplicantController::class, 'register'])->name('applicant.register');
 Route::post('/applicant/logout', [ApplicantController::class, 'logout'])->name('applicant.logout');
 Route::get('/applicant/dashboard', [ApplicantController::class, 'dashboard'])->name('applicant.dashboard');
+
+// Applicant Settings
+Route::middleware(['auth'])->group(function () {
+    Route::get('/applicant/settings', [App\Http\Controllers\Applicant\SettingsController::class, 'edit'])->name('applicants.settings');
+    Route::post('/applicant/settings', [App\Http\Controllers\Applicant\SettingsController::class, 'update'])->name('applicants.settings.update');
+});
+
+
 
 Route::resource('applications', ApplicationController::class);
 Route::patch('/applications/{application}/{status}', [ApplicationController::class, 'updateStatus'])

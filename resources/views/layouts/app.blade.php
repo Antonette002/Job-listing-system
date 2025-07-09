@@ -12,8 +12,6 @@
     <!-- Header -->
     <header class="bg-gray-800 text-white p-4 shadow flex justify-between items-center">
         <h1 class="text-xl font-bold">@yield('header-title', 'Dashboard')</h1>
-   
-</form>
 
     </header>
 

@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'My Application'); ?>
 <?php $__env->startSection('header-title', 'My Application'); ?>
 
