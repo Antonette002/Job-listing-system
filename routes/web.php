@@ -78,6 +78,6 @@ Route::patch('/applications/{application}/{status}', [ApplicationController::cla
 Route::resource('feedbacks', FeedbackController::class);
 Route::resource('messages', MessageController::class);
 Route::resource('users', UserController::class);
-Route::resource('register-company', RegisteredCompanyController::class)->only(['create','store']);
+
 
 //require __DIR__.'/auth.php';
