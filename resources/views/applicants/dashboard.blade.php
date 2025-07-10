@@ -27,7 +27,6 @@
             ⭐ <span>Feedback</span>
         </a>
 
-        <!-- ❓ FAQ Dropdown in Sidebar -->
         <details class="bg-[#162139] rounded-md px-3 py-2 text-white cursor-pointer">
             <summary class="flex items-center gap-2 font-medium">
                 ❓ <span>FAQ</span>
@@ -56,31 +55,26 @@
 @endsection
 
 @section('content')
-    <form method="POST" action="{{ route('applicant.logout') }}" class="mb-6">
-        @csrf
-        <button type="submit"
-                class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded shadow">
-            Logout
-        </button>
-    </form>
+    <!-- Personalized Welcome -->
+    <h1 class="text-3xl font-bold mb-6 text-[#1e2a47]">Welcome, {{ auth()->user()->applicant->full_name ?? 'Applicant' }} 👋</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <!-- Jobs -->
-        <div class="bg-blue-900 text-white p-4 rounded-xl shadow hover:shadow-md transition">
-            <div class="text-2xl font-bold">{{ $totalJobs ?? 0 }}</div>
-            <div class="text-sm mt-1">Jobs</div>
+        <div class="bg-blue-900 text-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+            <div class="text-3xl font-bold">{{ $totalJobs ?? 0 }}</div>
+            <div class="text-sm mt-1 uppercase tracking-wide">Jobs</div>
         </div>
 
         <!-- Messages -->
-        <div class="bg-blue-700 text-white p-4 rounded-xl shadow hover:shadow-md transition">
-            <div class="text-2xl font-bold">{{ $totalMessages ?? 0 }}</div>
-            <div class="text-sm mt-1">Messages</div>
+        <div class="bg-blue-700 text-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+            <div class="text-3xl font-bold">{{ $totalMessages ?? 0 }}</div>
+            <div class="text-sm mt-1 uppercase tracking-wide">Messages</div>
         </div>
 
         <!-- Feedback -->
-        <div class="bg-orange-500 text-white p-4 rounded-xl shadow hover:shadow-md transition">
-            <div class="text-2xl font-bold">{{ $totalFeedback ?? 0 }}</div>
-            <div class="text-sm mt-1">Feedback</div>
+        <div class="bg-orange-500 text-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+            <div class="text-3xl font-bold">{{ $totalFeedback ?? 0 }}</div>
+            <div class="text-sm mt-1 uppercase tracking-wide">Feedback</div>
         </div>
     </div>
 
@@ -88,9 +82,9 @@
     <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         @forelse ($jobs as $job)
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition p-6 flex flex-col justify-between">
-                <div class="space-y-2">
+                <div class="space-y-3">
                     <h3 class="text-lg font-semibold text-[#1e2a47]">{{ $job->title }}</h3>
-                    <p class="text-gray-600 text-sm">{{ Str::limit($job->description, 100) }}</p>
+                    <p class="text-gray-600 text-sm">{{ Str::limit($job->description, 110) }}</p>
 
                     <div class="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
                         <span class="flex items-center gap-1">📍 {{ $job->location }}</span>

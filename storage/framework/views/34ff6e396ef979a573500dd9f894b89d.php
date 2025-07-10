@@ -44,12 +44,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-    <form method="POST" action="<?php echo e(route('company.logout')); ?>" class="mb-6">
-        <?php echo csrf_field(); ?>
-        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded">
-            Logout
-        </button>
-    </form>
+
 
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Dashboard Overview</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
