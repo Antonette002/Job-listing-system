@@ -63,11 +63,13 @@ public function create(Request $request)
         'cover_letter' => 'required|file|mimes:pdf,doc,docx|max:2048',
         'cv_path' => 'required|file|mimes:pdf,doc,docx|max:2048',
         'portfolio_path' => 'nullable|file|mimes:pdf,doc,docx,zip,rar|max:4096',
-        'job_id' => 'required|exists:jobs,id',
+        'qualifications' => 'required|file|mimes:pdf,doc,docx|max:2048',
+       'job_id' => 'required|exists:jobs,id',
     ]);
 
     $coverLetterPath = $request->file('cover_letter')->store('cover_letters', 'public');
     $cvPath = $request->file('cv_path')->store('cvs', 'public');
+    $qualificationsPath = $request->file('qualifications')->store('qualifications', 'public');
     $portfolioPath = $request->hasFile('portfolio_path') 
         ? $request->file('portfolio_path')->store('portfolios', 'public')
         : null;
@@ -78,6 +80,7 @@ public function create(Request $request)
         'cover_letter' => $coverLetterPath,
         'cv_path' => $cvPath,
         'portfolio_path' => $portfolioPath,
+        'qualifications' => $qualificationsPath,
         'status' => 'pending',
     ]);
 

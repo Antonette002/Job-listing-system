@@ -109,13 +109,41 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
             </div>
+     <!-- Qualifications Upload -->
+<div class="mb-4">
+    <label for="qualifications" class="block text-sm font-medium text-gray-700">
+        Upload Qualifications (PDF/DOCX)
+    </label>
+    <input
+        id="qualifications"
+        type="file"
+        name="qualifications"
+        accept=".pdf,.doc,.docx"
+        required
+        class="mt-1 block w-full text-sm text-gray-700
+            file:mr-4 file:py-2 file:px-4 file:rounded-md
+            file:border-0 file:bg-blue-900 file:text-white
+            hover:file:bg-blue-800"
+    />
+    <?php $__errorArgs = ['qualifications'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+        <div class="mt-2 text-sm text-red-600"><?php echo e($message); ?></div>
+    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+</div>
+
+
 
             <div class="flex justify-end">
                 <button
                     type="submit"
                     class="px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md
-                        hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-600"
-                >
+                        hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-600" >
                     Submit Application
                 </button>
             </div>

@@ -31,11 +31,19 @@
 
         
         <span class="font-medium">
-            <?php echo e($user->company->name ?? $user->applicant->name ?? 'Unknown'); ?>
+            <?php if($user->role === 'company' && isset($user->company)): ?>
+                <?php echo e($user->company->name ?? 'Company'); ?>
 
+            <?php elseif($user->role === 'applicant' && isset($user->applicant)): ?>
+                <?php echo e($user->applicant->full_name ?? 'Applicant'); ?>
+
+            <?php else: ?>
+                Unknown
+            <?php endif; ?>
         </span>
     </a>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
 
       
     </ul>

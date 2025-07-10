@@ -40,9 +40,6 @@
                 <a href="{{ route('messages.index') }}" class="block p-2 hover:bg-blue-800 rounded">💬 Messages</a>
             </li>
             <li class="mb-2">
-                <a href="{{ route('feedbacks.index') }}" class="block p-2 hover:bg-blue-800 rounded">⭐ Feedback</a>
-            </li>
-            <li class="mb-2">
                 <a href="#" class="block p-2 hover:bg-blue-800 rounded">⚙️ Settings</a>
             </li>
         </ul>

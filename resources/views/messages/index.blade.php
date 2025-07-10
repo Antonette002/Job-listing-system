@@ -31,10 +31,17 @@
 
         {{-- Name --}}
         <span class="font-medium">
-            {{ $user->company->name ?? $user->applicant->name ?? 'Unknown' }}
+            @if ($user->role === 'company' && isset($user->company))
+                {{ $user->company->name ?? 'Company' }}
+            @elseif ($user->role === 'applicant' && isset($user->applicant))
+                {{ $user->applicant->full_name ?? 'Applicant' }}
+            @else
+                Unknown
+            @endif
         </span>
     </a>
 @endforeach
+
 
       
     </ul>
