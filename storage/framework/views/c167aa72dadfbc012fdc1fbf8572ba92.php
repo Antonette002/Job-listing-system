@@ -3,30 +3,46 @@
 <?php $__env->startSection('title', 'Messages'); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="max-w-3xl mx-auto p-6 bg-white shadow rounded">
+<div class="flex flex-col gap-6 p-6">
 
-    <h2 class="text-2xl font-semibold mb-6">Select a User to Chat With</h2>
+  <h2 class="text-2xl font-semibold mb-6">
+    <?php if(auth()->user()->role === 'applicant'): ?>
+        Select a company to chat with
+    <?php elseif(auth()->user()->role === 'company'): ?>
+        Select an applicant to chat with
+    <?php else: ?>
+        Select a user to chat with
+    <?php endif; ?>
+</h2>
 
-    <ul class="divide-y divide-gray-200">
-        <?php $__empty_1 = true; $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-            <li class="py-3 flex justify-between items-center hover:bg-gray-100 rounded px-3">
-                <div>
-                    <a href="<?php echo e(route('messages.show', $user->id)); ?>" class="text-blue-600 hover:underline">
-                        <?php echo e($user->company?->name ?? $user->name); ?>
 
-                    </a>
-                    <p class="text-sm text-gray-500">Role: <?php echo e(ucfirst($user->role ?? 'N/A')); ?></p>
-                </div>
-                <div>
-                    <!-- Optional: show unread count here -->
-                </div>
-            </li>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-            <li>No users found.</li>
-        <?php endif; ?>
+    <ul class="bg-white shadow rounded divide-y divide-gray-200 overflow-hidden">
+   <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <a href="<?php echo e(route('messages.show', $user->id)); ?>" class="flex items-center gap-2 py-2 px-3 hover:bg-gray-100 rounded">
+        
+        
+        <span class="text-gray-500">
+            <?php if($user->role === 'company'): ?>
+                💼
+            <?php else: ?>
+                👤
+            <?php endif; ?>
+        </span>
+
+        
+        <span class="font-medium">
+            <?php echo e($user->company->name ?? $user->applicant->name ?? 'Unknown'); ?>
+
+        </span>
+    </a>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+      
     </ul>
 
 </div>
 <?php $__env->stopSection(); ?>
+
+
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\job-listing\resources\views/messages/index.blade.php ENDPATH**/ ?>

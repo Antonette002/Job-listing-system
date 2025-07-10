@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Job;
+use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,7 @@ public function index()
     $user = auth()->user();
 
     if ($user->role === 'applicant') {
-        // Load the applicant with their applications, related jobs, and companies in one go
+        // Get the logged-in applicant with their applications
         $applicant = \App\Models\Applicant::with('applications.job.company')
             ->where('user_id', $user->id)
             ->first();
@@ -24,39 +25,56 @@ public function index()
         if (!$applicant || $applicant->applications->isEmpty()) {
             $users = collect();
         } else {
-            // Collect all companies linked to jobs applied to
+            // Get the companies from the jobs the applicant applied to
             $companies = $applicant->applications
                 ->pluck('job.company')
-                ->filter() // remove nulls
+                ->filter()
                 ->unique('id');
 
-            // Get the company users
+            // Get user accounts for those companies
             $companyUserIds = $companies->pluck('user_id')->unique();
-            $users = \App\Models\User::whereIn('id', $companyUserIds)->get();
+
+            $users = \App\Models\User::with('company')
+                ->whereIn('id', $companyUserIds)
+                ->get();
         }
+
     } elseif ($user->role === 'company') {
-        // Load company jobs with applications and applicants
-        $jobs = \App\Models\Job::with('applications.applicant.user')
-            ->where('company_id', $user->id)
-            ->get();
+        // Get the logged-in company's profile
+        $company = \App\Models\Company::where('user_id', $user->id)->first();
 
-        $applicantUsers = collect();
+        if (!$company) {
+            $users = collect();
+        } else {
+            // Get all applicants who applied to this company's jobs
+            $jobs = \App\Models\Job::with('applications.applicant.user')
+                ->where('company_id', $company->id)
+                ->get();
 
-        foreach ($jobs as $job) {
-            foreach ($job->applications as $application) {
-                if ($application->applicant && $application->applicant->user) {
-                    $applicantUsers->push($application->applicant->user);
+            $applicantUsers = collect();
+
+            foreach ($jobs as $job) {
+                foreach ($job->applications as $application) {
+                    if ($application->applicant && $application->applicant->user) {
+                        $applicantUsers->push($application->applicant->user);
+                    }
                 }
             }
+
+            
+            $users = \App\Models\User::with('applicant')
+                ->whereIn('id', $applicantUsers->unique('id')->pluck('id'))
+                ->get();
         }
 
-        $users = $applicantUsers->unique('id')->values();
     } else {
         $users = collect();
     }
 
     return view('messages.index', compact('users'));
 }
+
+
 
    
     // Send a message
@@ -130,13 +148,27 @@ public function store(Request $request)
         'content' => 'required|string|max:1000',
     ]);
 
-    Message::create([
+    \App\Models\Message::create([
         'sender_id' => auth()->id(),
         'receiver_id' => $request->receiver_id,
         'content' => $request->content,
     ]);
 
     return redirect()->route('messages.show', $request->receiver_id);
+}
+
+public function destroy($id)
+{
+    $message = \App\Models\Message::findOrFail($id);
+
+    // Only allow sender to delete their own message
+    if ($message->sender_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $message->delete();
+
+    return back()->with('status', 'Message deleted.');
 }
 
 }

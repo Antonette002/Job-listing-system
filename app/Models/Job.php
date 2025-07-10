@@ -19,7 +19,7 @@ class Job extends Model
     //relationship with application model
     public function applications()
         {
-            return $this->hasMany(Applications::class);
+            return $this->hasMany(Application::class);
         }
 
     //relationship with applicant model
