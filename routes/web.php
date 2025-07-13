@@ -44,6 +44,8 @@ Route::post('/company/logout', function (Request $request) {
 Route::match(['get', 'post'], '/company/register', [CompanyController::class, 'register'])->name('company.register');
 Route::get('/company/dashboard', [CompanyController::class, 'dashboard'])->name('company.dashboard');
 Route::get('/company/settings', [CompanyController::class, 'settings'])->name('company.settings');
+Route::get('/company/dashboard', [CompanyController::class, 'dashboard'])->name('companies.dashboard');
+
 
 
 

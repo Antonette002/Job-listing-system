@@ -58,12 +58,13 @@ class CompanyController extends Controller
     }
 
     //dashboard
-   public function dashboard()
+  public function dashboard()
 {
     $user = auth()->user();
+    $company = $user->company; // 👈 add this
 
     // Get jobs for this company
-    $jobs = $user->company->jobs;
+    $jobs = $company->jobs;
 
     // Job stats
     $totalJobs = $jobs->count();
@@ -82,7 +83,14 @@ class CompanyController extends Controller
     $totalMessages = Message::where('receiver_id', $user->id)->count();
 
     return view('companies.dashboard', compact(
-        'totalJobs','totalApplications','pendingApplications', 'acceptedApplications', 'rejectedApplications', 'totalMessages'
+        'company', 
+        'totalJobs',
+        'activeJobs',
+        'totalApplications',
+        'pendingApplications',
+        'acceptedApplications',
+        'rejectedApplications',
+        'totalMessages'
     ));
 }
 
@@ -111,7 +119,7 @@ class CompanyController extends Controller
             }
 
             $request->session()->regenerate();
-            return redirect()->route('company.dashboard');
+            return redirect()->route('companies.dashboard');
         }
 
         return back()->withErrors([
@@ -129,27 +137,44 @@ class CompanyController extends Controller
         return view('companies.show', ['companies' => $company]);
     }
 
-    public function edit(string $id)
-    {
-        $company = Company::findOrFail($id);
-        return view('companies.edit', ['companies' => $company]);
-    }
+ public function edit(string $id)
+{
+    $company = Company::with('user')->findOrFail($id);
+    return view('companies.settings', compact('company'));
+}
 
-    public function update(Request $request, string $id)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'industry' => 'nullable|string',
-            'email' => 'required|email|unique:companies,email,' . $id,
-            'logo_path' => 'nullable|string',
-            'description' => 'nullable|string',
-        ]);
 
-        $company = Company::findOrFail($id);
-        $company->update($validated);
+public function update(Request $request, string $id)
+{
+    $company = Company::findOrFail($id);
 
-        return redirect()->route('companies.index')->with('success', 'Company updated successfully');
-    }
+    // Also fetch the related user (for email update)
+    $user = $company->user;
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'industry' => 'nullable|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'logo_path' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+    ]);
+
+    // Update company fields
+    $company->update([
+        'name' => $validated['name'],
+        'industry' => $validated['industry'],
+        'logo_path' => $validated['logo_path'],
+        'description' => $validated['description'],
+    ]);
+
+    // Update user's email separately
+    $user->update([
+        'email' => $validated['email'],
+    ]);
+
+    return redirect()->back()->with('success', 'Company settings updated successfully.');
+}
+
 
     public function destroy(string $id)
     {

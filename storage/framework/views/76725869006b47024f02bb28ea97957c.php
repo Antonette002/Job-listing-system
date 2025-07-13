@@ -29,9 +29,17 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white p-4 text-center">
+   <!-- Footer -->
+<footer class="bg-gray-800 text-white p-4 text-center text-sm mt-10">
+    <div class="mb-2">
         &copy; 2025 Nchito. All rights reserved.
-    </footer>
+    </div>
+    <div>
+        <p>Contact us: <a href="mailto:support@nchito.com" class="text-blue-400 underline">support@nchito.com</a></p>
+        <p>Phone: <a href="tel:+260960939135" class="text-blue-400 underline">0960939135</a></p>
+    </div>
+</footer>
+
 
 </body>
 </html>
