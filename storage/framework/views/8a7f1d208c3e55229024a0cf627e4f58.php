@@ -52,7 +52,7 @@
                             <p>
                                 📄 CV:
                                 <?php if($application->cv_path): ?>
-                                    <a href="<?php echo e(asset('storage/' . $application->cv_path)); ?>" target="_blank"
+                                    <a href="<?php echo e(route('company.applications.downloadFile', ['applicationId' => $application->id, 'fileType' => 'cv'])); ?>"
                                        class="text-blue-600 hover:underline">Download CV</a>
                                 <?php else: ?>
                                     <span class="text-gray-400">Not uploaded</span>
@@ -61,7 +61,7 @@
                             <p>
                                 📝 Cover Letter:
                                 <?php if($application->cover_letter): ?>
-                                    <a href="<?php echo e(asset('storage/' . $application->cover_letter)); ?>" target="_blank"
+                                    <a href="<?php echo e(route('company.applications.downloadFile', ['applicationId' => $application->id, 'fileType' => 'cover_letter'])); ?>"
                                        class="text-blue-600 hover:underline">Download Cover Letter</a>
                                 <?php else: ?>
                                     <span class="text-gray-400">Not uploaded</span>
@@ -105,5 +105,6 @@
         <p class="text-center text-gray-500">No applications available at the moment.</p>
     <?php endif; ?>
 <?php $__env->stopSection(); ?>
+
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\job-listing\resources\views/applications/index.blade.php ENDPATH**/ ?>

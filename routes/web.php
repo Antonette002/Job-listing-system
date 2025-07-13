@@ -45,6 +45,21 @@ Route::match(['get', 'post'], '/company/register', [CompanyController::class, 'r
 Route::get('/company/dashboard', [CompanyController::class, 'dashboard'])->name('company.dashboard');
 Route::get('/company/settings', [CompanyController::class, 'settings'])->name('company.settings');
 Route::get('/company/dashboard', [CompanyController::class, 'dashboard'])->name('companies.dashboard');
+Route::get('/company/applicants/{applicantId}/download/{fileType}', [CompanyController::class, 'downloadApplicantFile'])
+        ->name('company.applicants.downloadFile');
+// Route for downloading application files (CV, cover letter, etc.)
+Route::get('/company/applications/{applicationId}/download/{fileType}', [CompanyController::class, 'downloadApplicantFile'])
+    ->middleware('auth')
+    ->name('company.applications.downloadFile');
+
+// Route for updating application status (accept/reject)
+Route::patch('/applications/{application}/status/{status}', [CompanyController::class, 'updateApplicationStatus'])
+    ->name('applications.updateStatus');
+
+// Other company routes (assuming they exist already)
+Route::get('/companies/dashboard', [CompanyController::class, 'dashboard'])->name('companies.dashboard');
+Route::get('/company/settings', [CompanyController::class, 'settings'])->name('company.settings');
+
 
 
 
@@ -63,18 +78,15 @@ Route::post('/applicant/logout', function (Request $request) {
 Route::match(['get', 'post'], '/applicant/register', [ApplicantController::class, 'register'])->name('applicant.register');
 Route::post('/applicant/logout', [ApplicantController::class, 'logout'])->name('applicant.logout');
 Route::get('/applicant/dashboard', [ApplicantController::class, 'dashboard'])->name('applicant.dashboard');
+Route::post('/applicant/settings', [App\Http\Controllers\Applicant\SettingsController::class, 'update'])->name('applicants.settings.update');
 
-// Applicant Settings
-Route::middleware(['auth'])->group(function () {
-    Route::get('/applicant/settings', [App\Http\Controllers\Applicant\SettingsController::class, 'edit'])->name('applicants.settings');
-    Route::post('/applicant/settings', [App\Http\Controllers\Applicant\SettingsController::class, 'update'])->name('applicants.settings.update');
-});
 
 
 
 Route::resource('applications', ApplicationController::class);
 Route::patch('/applications/{application}/{status}', [ApplicationController::class, 'updateStatus'])
     ->name('applications.updateStatus');
+
 
 
 Route::resource('feedbacks', FeedbackController::class);

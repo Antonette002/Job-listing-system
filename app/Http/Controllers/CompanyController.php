@@ -7,6 +7,9 @@ use App\Models\Company;
 use App\Models\User;
 use App\Models\Application;
 use App\Models\Message;
+use App\Models\Applicant;
+
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -61,7 +64,7 @@ class CompanyController extends Controller
   public function dashboard()
 {
     $user = auth()->user();
-    $company = $user->company; // 👈 add this
+    $company = $user->company; 
 
     // Get jobs for this company
     $jobs = $company->jobs;
@@ -175,6 +178,18 @@ public function update(Request $request, string $id)
     return redirect()->back()->with('success', 'Company settings updated successfully.');
 }
 
+public function downloadCV($id)
+{
+    $applicant = Applicant::findOrFail($id);
+    $cvPath = $applicant->cv_path; 
+
+    if (!Storage::disk('public')->exists($cvPath)) {
+        abort(404, 'CV file not found.');
+    }
+
+    return Storage::disk('public')->download($cvPath);
+}
+
 
     public function destroy(string $id)
     {
@@ -182,4 +197,28 @@ public function update(Request $request, string $id)
         $company->delete();
         return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
     }
+    
+    public function downloadApplicantFile($applicationId, $fileType)
+{
+    $application = Application::findOrFail($applicationId);
+
+    $fileColumns = [
+        'cv' => 'cv_path',
+        'cover_letter' => 'cover_letter',
+        'qualifications' => 'qualifications',
+        'portfolio' => 'portfolio_path',
+    ];
+
+    if (!array_key_exists($fileType, $fileColumns)) {
+        abort(404, 'Invalid file type requested.');
+    }
+
+    $filePath = $application->{$fileColumns[$fileType]};
+
+    if (!$filePath || !Storage::disk('public')->exists($filePath)) {
+        abort(404, 'File not found.');
+    }
+
+    return Storage::disk('public')->download($filePath);
+}
 }

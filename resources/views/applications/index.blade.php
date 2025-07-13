@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Applications')
@@ -55,7 +54,7 @@
                             <p>
                                 📄 CV:
                                 @if($application->cv_path)
-                                    <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
+                                    <a href="{{ route('company.applications.downloadFile', ['applicationId' => $application->id, 'fileType' => 'cv']) }}"
                                        class="text-blue-600 hover:underline">Download CV</a>
                                 @else
                                     <span class="text-gray-400">Not uploaded</span>
@@ -64,7 +63,7 @@
                             <p>
                                 📝 Cover Letter:
                                 @if($application->cover_letter)
-                                    <a href="{{ asset('storage/' . $application->cover_letter) }}" target="_blank"
+                                    <a href="{{ route('company.applications.downloadFile', ['applicationId' => $application->id, 'fileType' => 'cover_letter']) }}"
                                        class="text-blue-600 hover:underline">Download Cover Letter</a>
                                 @else
                                     <span class="text-gray-400">Not uploaded</span>
@@ -108,3 +107,4 @@
         <p class="text-center text-gray-500">No applications available at the moment.</p>
     @endif
 @endsection
+
