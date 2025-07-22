@@ -25,12 +25,18 @@
             Your Future Starts with <span class="text-sky-400">Nchito</span>
         </h1>
         <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Where Zambian talent meets opportunity. Whether you're hiring or applying — you're in the right place.
+            Where Zambian talent meets opportunity. Whether you're hiring or applying , you're in the right place.
         </p>
+        
         <a href="{{ route('applicant.login') }}" 
-           class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold px-8 py-4 rounded-lg shadow-lg transition duration-300">
-            Explore Opportunities
-        </a>
+   class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold px-8 py-4 rounded-lg shadow-lg transition duration-300 mr-4">
+    Explore Opportunities
+</a>
+
+<a href="{{ route('applicant.dashboard') }}"
+   class="bg-[#3b82f6] hover:bg-[#1d4ed8] text-white font-semibold px-8 py-4 rounded-lg shadow-lg transition duration-300">
+    View as Guest
+</a>
     </header>
 
     <!-- Features Section -->
@@ -57,7 +63,7 @@
         <div class="mb-2">&copy; 2025 Nchito. All rights reserved.</div>
         <div>
             Contact: <a href="mailto:support@nchito.com" class="text-blue-400 underline">support@nchito.com</a> |
-            <a href="tel:+260960939135" class="text-blue-400 underline">0960939135</a>
+            <a href="tel:+260960939135" class="text-blue-400 underline">+260960939135</a>
         </div>
     </footer>
 

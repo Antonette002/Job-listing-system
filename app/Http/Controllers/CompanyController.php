@@ -221,4 +221,10 @@ public function downloadCV($id)
 
     return Storage::disk('public')->download($filePath);
 }
+public function settings()
+{
+    $company = auth()->user(); 
+    return view('companies.settings', compact('company'));
+}
+
 }

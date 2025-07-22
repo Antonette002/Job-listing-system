@@ -27,7 +27,7 @@
             ⭐ <span>Feedback</span>
         </a>
 
-        <a href="{{ route('applicants.settings') }}"
+        <a href="{{ route('applicants.edit', $applicant->id) }}"
            class="flex items-center gap-2 px-3 py-2 bg-[#162139] rounded-md transition-all">
             ⚙️ <span>Settings</span>
         </a>
@@ -54,7 +54,8 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('applicants.settings.update') }}" class="space-y-5">
+       <form method="POST" action="{{ route('applicants.update', $applicant->id) }}" class="space-y-5">
+
             @csrf
 
             <div>

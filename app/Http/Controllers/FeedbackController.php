@@ -13,6 +13,10 @@ class FeedbackController extends Controller
      */
 public function index()
 {
+    
+    if (!auth()->check() || auth()->user()->role !== 'applicant') {
+        return redirect()->route('applicant.register')->with('error', 'Please register as an applicant to apply.');
+    }
     $user = auth()->user();
     $applicant = $user?->applicant;
 

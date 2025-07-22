@@ -51,6 +51,8 @@ Route::resource('applicants', ApplicantController::class);
 Route::match(['get', 'post'], '/applicant/login', [ApplicantController::class, 'login'])->name('applicant.login');
 Route::match(['get', 'post'], '/applicant/register', [ApplicantController::class, 'register'])->name('applicant.register');
 
+
+
 Route::post('/applicant/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
@@ -60,10 +62,10 @@ Route::post('/applicant/logout', function (Request $request) {
 
 Route::get('/applicant/dashboard', [ApplicantController::class, 'dashboard'])->name('applicant.dashboard');
 
-Route::post('/applicant/settings', [SettingsController::class, 'update'])->name('applicants.settings.update');
 
 // application, feedback, messages, users
 Route::resource('applications', ApplicationController::class);
+
 Route::resource('feedbacks', FeedbackController::class);
 Route::resource('messages', MessageController::class);
 Route::resource('users', UserController::class);

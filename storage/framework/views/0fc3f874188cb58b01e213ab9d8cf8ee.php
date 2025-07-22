@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Settings'); ?>
 <?php $__env->startSection('header-title', 'Settings'); ?>
 
@@ -27,7 +25,7 @@
             ⭐ <span>Feedback</span>
         </a>
 
-        <a href="<?php echo e(route('applicants.settings')); ?>"
+        <a href="<?php echo e(route('applicants.edit', $applicant->id)); ?>"
            class="flex items-center gap-2 px-3 py-2 bg-[#162139] rounded-md transition-all">
             ⚙️ <span>Settings</span>
         </a>
@@ -55,7 +53,8 @@
             </div>
         <?php endif; ?>
 
-        <form method="POST" action="<?php echo e(route('applicants.settings.update')); ?>" class="space-y-5">
+       <form method="POST" action="<?php echo e(route('applicants.update', $applicant->id)); ?>" class="space-y-5">
+
             <?php echo csrf_field(); ?>
 
             <div>

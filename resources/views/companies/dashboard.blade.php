@@ -49,8 +49,10 @@
 
 @section('content')
 
+@section('content')
+    <!-- Personalized Welcome -->
+    <h1 class="text-3xl font-bold mb-6 text-[#1e2a47]">Welcome, {{ auth()->user()->company->name ?? 'Company' }} </h1>
 
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Dashboard Overview</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="bg-blue-900 text-white p-4 rounded-xl shadow">
             <div class="text-2xl font-bold">{{ $totalJobs ?? 0 }}</div>

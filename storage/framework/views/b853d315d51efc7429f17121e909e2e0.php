@@ -1,0 +1,1 @@
+<?php /**PATH C:\xampp\htdocs\job-listing\resources\views/applicants/show.blade.php ENDPATH**/ ?>

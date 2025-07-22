@@ -85,22 +85,27 @@ public function dashboard()
     $user = auth()->user();
 
     // Safely get the applicant model
-    $applicant = $user?->applicant;
+    $applicant = $user->applicant;
 
     // Safely get the latest application for that applicant
     $application = $applicant
         ? $applicant->applications()->with('job')->latest()->first()
         : null;
 
+    // Get all jobs
     $jobs = Job::latest()->get();
 
-   return view('applicants.dashboard', compact('jobs', 'application'), [
-    'totalJobs' => Job::count(),
-    'totalMessages' => $applicant ? Message::where('receiver_id', auth()->id())->count() : 0,
-    'totalFeedback' => $applicant ? Feedback::where('applicant_id', $applicant->id)->count() : 0,
-]);
-
+    // Return view with all necessary variables
+    return view('applicants.dashboard', [
+        'jobs' => $jobs,
+        'application' => $application,
+        'totalJobs' => Job::count(),
+        'totalMessages' => $applicant ? Message::where('receiver_id', $user->id)->count() : 0,
+        'totalFeedback' => $applicant ? Feedback::where('applicant_id', $applicant->id)->count() : 0,
+        'applicant' => $applicant,
+    ]);
 }
+
 
    //index
 
@@ -126,16 +131,17 @@ public function dashboard()
         return redirect()->route('applicants.index')->with('success', 'Applicant added successfully');
     }
 
+    
     public function show(string $id)
     {
         $applicant = Applicant::findOrFail($id);
-        return view('applicants.show', ['applicants' => $applicant]);
+        return view('applicants.show', ['applicant' => $applicant]);
     }
 
     public function edit(string $id)
     {
         $applicant = Applicant::findOrFail($id);
-        return view('applicants.edit', ['applicants' => $applicant]);
+        return view('applicants.settings', ['applicant' => $applicant]);
     }
 
     public function update(Request $request, string $id)

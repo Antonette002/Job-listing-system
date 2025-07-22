@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Application;
 use App\Models\Job;
+use App\Models\User;
 use App\Models\Applicant;
 use App\Models\Feedback;
 
@@ -33,6 +34,11 @@ class ApplicationController extends Controller
      */
 public function create(Request $request)
 {
+
+    if (!auth()->check() || auth()->user()->role !== 'applicant') {
+        return redirect()->route('applicant.register')->with('error', 'Please register as an applicant to apply.');
+    }
+
     $jobId = $request->query('job_id');
 
     if (!$jobId || !($job = \App\Models\Job::find($jobId))) {

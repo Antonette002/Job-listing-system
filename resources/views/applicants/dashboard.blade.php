@@ -47,16 +47,20 @@
             </div>
         </details>
 
-        <a href="{{ route('applicants.settings') }}"
-           class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#162139] transition-all">
-            ⚙️ <span>Settings</span>
-        </a>
-    </nav>
+        @if($applicant)
+    <a href="{{ route('applicants.edit', $applicant->id) }}"
+       class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-[#162139] transition-all">
+        ⚙️ <span>Settings</span>
+    </a>
+@endif
+
+</nav>
+
 @endsection
 
 @section('content')
     <!-- Personalized Welcome -->
-    <h1 class="text-3xl font-bold mb-6 text-[#1e2a47]">Welcome, {{ auth()->user()->applicant->full_name ?? 'Applicant' }} 👋</h1>
+    <h1 class="text-3xl font-bold mb-6 text-[#1e2a47]">Welcome, {{ auth()->user()->applicant->full_name ?? 'Guest' }} </h1>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <!-- Jobs -->
@@ -94,8 +98,7 @@
                         </span>
                     </div>
                 </div>
-
-                <div class="flex gap-3 mt-6">
+                    <div class="flex gap-3 mt-6">
                     <a href="{{ route('jobs.show', $job->id) }}"
                        class="bg-[#1e2a47] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#162139] transition">
                         View Details
@@ -104,7 +107,7 @@
                        class="bg-orange-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-600 transition">
                         Apply
                     </a>
-                </div>
+</div>
             </div>
         @empty
             <p class="text-gray-500">No jobs available at the moment.</p>
